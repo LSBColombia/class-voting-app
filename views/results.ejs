@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Resultados - <%= poll.title %></title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ddd;padding:8px}</style>
+</head><body>
+  <h1>Resultados: <%= poll.title %></h1>
+  <h2>Conteo</h2>
+  <table>
+    <tr><th>Opción</th><th>Votos</th></tr>
+    <% results.forEach(r => { %>
+      <tr><td><%= r.label %></td><td><%= r.votes %></td></tr>
+    <% }) %>
+  </table>
+
+  <h2>Quién votó</h2>
+  <table>
+    <tr><th>Nombre</th><th>Elección</th><th>Hora</th></tr>
+    <% voters.forEach(v => { %>
+      <tr><td><%= v.name %></td><td><%= v.choice %></td><td><%= v.created_at %></td></tr>
+    <% }) %>
+  </table>
+</body></html>

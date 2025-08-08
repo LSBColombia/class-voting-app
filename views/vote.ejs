@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title><%= poll.title %></title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px} .opt{margin:6px 0}</style>
+</head><body>
+  <h1><%= poll.title %></h1>
+  <p><%= poll.description %></p>
+  <form method="post" action="/vote">
+    <input type="hidden" name="code" value="<%= code %>"/>
+    <label>Tu nombre</label><br/>
+    <input name="name" required style="padding:8px;width:100%;max-width:420px"/><br/><br/>
+
+    <label>Elige una opción</label><br/>
+    <% options.forEach(o => { %>
+      <div class="opt"><label><input type="radio" name="option_id" value="<%= o.id %>" required/> <%= o.label %></label></div>
+    <% }) %>
+
+    <p style="font-size:13px;color:#555">Al enviar aceptas que tu <strong>nombre</strong> y elección sean visibles públicamente en la página de resultados.</p>
+    <button type="submit">Votar</button>
+  </form>
+</body></html>

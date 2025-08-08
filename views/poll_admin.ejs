@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Admin Encuesta</title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ddd;padding:8px} .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px} .card{border:1px solid #ddd;border-radius:12px;padding:16px}</style>
+</head><body>
+  <h1>Admin: <%= poll.title %></h1>
+  <form method="post" action="/admin/poll/<%= poll.id %>/status">
+    <input type="hidden" name="key" value="<%= process.env.ADMIN_PASSWORD %>"/>
+    <select name="status">
+      <option value="open" <%= poll.status==='open'?'selected':'' %>>open</option>
+      <option value="closed" <%= poll.status==='closed'?'selected':'' %>>closed</option>
+    </select>
+    <button type="submit">Guardar estado</button>
+  </form>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Tokens (<%= usedTokens %> usados)</h2>
+      <table>
+        <tr><th>#</th><th>Código</th><th>QR</th><th>Estado</th></tr>
+        <% tokens.forEach((t, i) => { %>
+          <tr>
+            <td><%= i+1 %></td>
+            <td><code><%= t.code %></code></td>
+            <td>
+              <img src="/qr?data=<%= encodeURIComponent(baseUrl + '/t/' + t.code) %>" width="120"/>
+              <div><small><%= baseUrl %>/t/<%= t.code %></small></div>
+            </td>
+            <td><%= t.used_at ? ('Usado ' + t.used_at) : 'Disponible' %></td>
+          </tr>
+        <% }) %>
+      </table>
+      <p><a href="/admin/poll/<%= poll.id %>/export?p=<%= process.env.ADMIN_PASSWORD %>">Descargar CSV</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Opciones</h2>
+      <ul>
+        <% options.forEach(o => { %><li><%= o.label %></li><% }) %>
+      </ul>
+      <h3>Resultados rápidos</h3>
+      <p>Votos registrados: <strong><%= votesCount %></strong></p>
+      <p><a href="/results/<%= poll.id %>">Ver página de resultados</a></p>
+    </div>
+  </div>
+
+  <p><a href="/admin?p=<%= process.env.ADMIN_PASSWORD %>">Volver</a></p>
+</body></html>

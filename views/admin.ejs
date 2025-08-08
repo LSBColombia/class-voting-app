@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Admin</title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px} input, textarea{width:100%;padding:8px;margin:6px 0} .row{display:grid;grid-template-columns:1fr 1fr;gap:16px} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ddd;padding:8px}</style>
+</head><body>
+  <h1>Admin</h1>
+  <h2>Crear nueva encuesta</h2>
+  <form method="post" action="/admin/create">
+    <input type="hidden" name="key" value="<%= process.env.ADMIN_PASSWORD %>"/>
+    <label>Título</label>
+    <input name="title" placeholder="Ej. Votación Clase X" required/>
+    <label>Descripción (opcional)</label>
+    <textarea name="description" rows="2" placeholder="Contexto breve"></textarea>
+    <div class="row">
+      <div>
+        <label>Opciones (1 por línea)</label>
+        <textarea name="options" rows="6" placeholder="Opción A
+Opción B" required></textarea>
+      </div>
+      <div>
+        <label>Número de tokens</label>
+        <input type="number" name="token_count" min="1" value="30" required/>
+      </div>
+    </div>
+    <button type="submit">Crear</button>
+  </form>
+
+  <h2>Encuestas</h2>
+  <table>
+    <tr><th>ID</th><th>Título</th><th>Estado</th><th>Acciones</th></tr>
+    <% polls.forEach(p => { %>
+      <tr>
+        <td><%= p.id %></td>
+        <td><%= p.title %></td>
+        <td><%= p.status %></td>
+        <td>
+          <a href="/admin/poll/<%= p.id %>?p=<%= process.env.ADMIN_PASSWORD %>">Abrir</a> | 
+          <a href="/results/<%= p.id %>">Resultados</a>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+</body></html>
